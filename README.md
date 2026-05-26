@@ -37,6 +37,7 @@ See `src/README.md` and `research_logs/` for architecture and experiment discipl
 | `tests/` | parity and unit tests |
 | `probe_results/` | frozen seeds + reports (large jsonl gitignored) |
 | `research_logs/` | hypotheses and phase notes |
+| `kaggle_probe/` | **local only** (gitignored) — old ablations / replays |
 
 ## License
 
