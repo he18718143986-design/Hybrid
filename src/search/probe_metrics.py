@@ -321,14 +321,74 @@ def summarize_regret(rows: List[dict]) -> dict[str, Any]:
     return out
 
 
-def choices_at_obs(obs: Any, config: Optional[dict]) -> dict[str, Any]:
+def _signal_probe_moves(
+    obs: Any,
+    v2_moves: List[Move],
+    scored: List[Candidate],
+) -> List[Move]:
+    """Rollout≠v2 with margin>0 for signal existence (live still vetoes neutral_capture)."""
+    from src.env.legality import merge_override_move, validate_move_for_obs
+
+    if not v2_moves or not scored:
+        return v2_moves
+    v2_primary = v2_moves[0]
+    best = scored[0]
+    override: Move = [best.src_id, best.angle, best.ships]
+    if not validate_move_for_obs(override, obs):
+        return v2_moves
+    if list(v2_primary) == override:
+        return v2_moves
+    v2_top = _match_scored_candidate(scored, v2_primary)
+    margin = rollout_margin_vs_v2(best, v2_top)
+    if margin is None or margin <= 0:
+        return v2_moves
+    return merge_override_move(v2_moves, override, obs)
+
+
+def _gated_counterfactual_moves(
+    obs: Any,
+    v2_moves: List[Move],
+    scored: List[Candidate],
+) -> List[Move]:
+    """Top rollout override when gate allows (non-neutral buckets only)."""
+    from src.env.legality import merge_override_move, validate_move_for_obs
+    from src.policy.gate_policy_v1 import decide_override
+
+    if not v2_moves or not scored:
+        return v2_moves
+    v2_primary = v2_moves[0]
+    best = scored[0]
+    v2_top = _match_scored_candidate(scored, v2_primary)
+    margin = rollout_margin_vs_v2(best, v2_top)
+    if margin is None:
+        return v2_moves
+    bucket = classify_decision_bucket(obs, candidate=best, move=v2_primary)
+    if bucket == "neutral_capture":
+        return v2_moves
+    override: Move = [best.src_id, best.angle, best.ships]
+    if not validate_move_for_obs(override, obs):
+        return v2_moves
+    if list(v2_primary) == override:
+        return v2_moves
+    if not decide_override(bucket, margin):
+        return v2_moves
+    return merge_override_move(v2_moves, override, obs)
+
+
+def choices_at_obs(
+    obs: Any,
+    config: Optional[dict],
+    *,
+    counterfactual: bool = False,
+) -> dict[str, Any]:
     """v2 vs hybrid decisions + candidate metadata at one observation."""
     from src.candidate.generate import generate_all_candidates
-    from src.env.legality import pick_legal_or_fallback
+    from src.env.legality import filter_legal_moves
+    from src.policy.hybrid_agent import _hybrid_agent
     from src.policy.v2_bridge import v2_agent
 
     world = World.from_obs(obs)
-    v2_moves = v2_agent(obs, config)
+    v2_moves = filter_legal_moves(v2_agent(obs, config), obs)
 
     scored: List[Candidate] = []
     hy_top = None
@@ -336,18 +396,16 @@ def choices_at_obs(obs: Any, config: Optional[dict]) -> dict[str, Any]:
         score_budget = TimeBudget.from_config(config)
         candidates = generate_all_candidates(world, score_budget)
         scored = score_candidates(
-            world, candidates, score_budget, rollout_depth=4, use_rollout=True,
+            world, candidates, score_budget, rollout_depth=8, use_rollout=True,
         )
         hy_top = scored[0] if scored else None
     except Exception:
         hy_top = None
 
-    if hy_top is not None:
-        hy_moves = pick_legal_or_fallback(
-            [[hy_top.src_id, hy_top.angle, hy_top.ships]], v2_moves, obs,
-        )
+    if counterfactual and scored:
+        hy_moves = filter_legal_moves(_signal_probe_moves(obs, v2_moves, scored), obs)
     else:
-        hy_moves = v2_moves
+        hy_moves = filter_legal_moves(_hybrid_agent(obs, config), obs)
 
     v2m = _primary_move(v2_moves)
     hym = _primary_move(hy_moves)
@@ -356,6 +414,7 @@ def choices_at_obs(obs: Any, config: Optional[dict]) -> dict[str, Any]:
     kind = classify_rollout_divergence(v2m, hym, v2_top, hy_top)
     v2_bucket = classify_decision_bucket(obs, candidate=v2_top, move=v2m)
     hy_bucket = classify_decision_bucket(obs, candidate=hy_top, move=hym)
+    move_lists_differ = [list(m) for m in v2_moves] != [list(m) for m in hy_moves]
 
     return {
         "v2_moves": v2_moves,
@@ -364,7 +423,7 @@ def choices_at_obs(obs: Any, config: Optional[dict]) -> dict[str, Any]:
         "hybrid_candidate": None if hy_top is None else _candidate_dict(hy_top),
         "rollout_margin": margin,
         "divergence_kind": kind,
-        "differ": kind not in ("same_decision", "same_empty"),
+        "differ": move_lists_differ or kind not in ("same_decision", "same_empty"),
         "v2_action_bucket": v2_bucket,
         "hybrid_action_bucket": hy_bucket,
     }

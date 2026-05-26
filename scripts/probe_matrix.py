@@ -111,19 +111,22 @@ def run_cell(
             divergence = {"divergence": {}, "sample_count": 0}
 
         if collect_delta:
+            use_cf = name == "hybrid_frontier" and len(seeds) > 5
             deltas = collect_decision_deltas(
                 seeds,
                 act_timeout,
                 rollout_opp,
                 decision_steps=decision_steps,
                 regret_horizon=regret_horizon,
+                counterfactual=use_cf,
             )
             delta_count = len(deltas)
+            diverged = sum(1 for r in deltas if r.get("differ"))
             delta_path = RESULTS_DIR / f"decision_delta_{name}_{MATRIX_VERSION}.jsonl"
             with delta_path.open("w", encoding="utf-8") as f:
                 for row in deltas:
                     f.write(json.dumps(row, separators=(",", ":")) + "\n")
-            print(f"  decision_delta: {delta_count} records -> {delta_path}")
+            print(f"  decision_delta: {delta_count} records ({diverged} diverged) -> {delta_path}")
 
         report_path = RESULTS_DIR / f"regret_report_{name}_{MATRIX_VERSION}.json"
         report_path.write_text(
@@ -181,6 +184,8 @@ def main() -> int:
         regret_horizon = min(args.regret_horizon, 8)
     else:
         decision_steps = tuple(int(x) for x in args.decision_steps.split(",") if x.strip())
+        if args.decision_steps == "0,10,25,50,100":
+            decision_steps = (0, 10, 25, 50, 75, 100, 150)
         regret_horizon = args.regret_horizon
 
     try:

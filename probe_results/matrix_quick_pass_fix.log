@@ -1,0 +1,26 @@
+Loading environment cabt failed: dlopen(/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so, 0x0006): tried: '/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (slice is not valid mach-o file), '/System/Volumes/Preboot/Cryptexes/OS/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (no such file), '/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (slice is not valid mach-o file)
+Probe matrix v1: 5 seeds, actTimeout=999.0
+
+============================================================
+Cell: hybrid_frontier  seeds=5  rollout_opponent=frontier
+============================================================
+
+=== hybrid_frontier ===
+  P0 (hybrid_main.py): winrate=0.0%  avg_ships=0  avg_planets=0.0
+  P1 (submission_v2.py): winrate=100.0%  avg_ships=3156  avg_planets=28.0
+  completed=5/5  invalid_episodes=0  timeout_events=0  invalid_events=674
+  draws=0.0%  avg_game_s=11.0
+
+--- regret (hybrid_frontier, horizon=8) ---
+  n=10  avg_ship_diff=-3.50  hybrid_worse_rate=20.0%
+  same_decision_rate=50.0%  decision_reversal_rate=20.0%  reversal|diverged=40.0%
+  override_precision=0.0%  override_recall=0.0%  reversal_severity=20.0 ships
+  margin↔outcome corr=4.00
+  divergence_sample same_decision=0.0% (n=10)
+  by_bucket (read order: neutral_capture, aggressive_expansion, comet_chase):
+    neutral_capture: n=6  worse=33%  avg_ship_diff=-6.7  reversal=33%  reversal|div=40%
+    pass: n=4  worse=0%  avg_ship_diff=1.2  reversal=0%  reversal|div=0%
+  decision_delta: 10 records -> /Users/97jiyu/Downloads/Orbit/probe_results/decision_delta_hybrid_frontier_v1.jsonl
+  wrote /Users/97jiyu/Downloads/Orbit/probe_results/regret_report_hybrid_frontier_v1.json
+
+Matrix report: /Users/97jiyu/Downloads/Orbit/probe_results/matrix_report_v1.json

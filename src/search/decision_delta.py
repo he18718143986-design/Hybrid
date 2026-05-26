@@ -39,9 +39,11 @@ def build_delta_record(
     act_timeout: float,
     follow_agent,
     rollout_opponent: str,
+    *,
+    counterfactual: bool = False,
 ) -> Optional[Dict[str, Any]]:
     """One decision point: v2 vs hybrid move + N-turn real-env regret."""
-    ch = choices_at_obs(obs, config)
+    ch = choices_at_obs(obs, config, counterfactual=counterfactual)
     v2_moves = ch.get("v2_moves") or []
     hy_moves = ch.get("hybrid_moves") or []
 
@@ -108,6 +110,8 @@ def collect_decision_deltas(
     decision_steps: Sequence[int] = (0, 10, 25, 50, 100),
     regret_horizon: int = 15,
     only_differ: bool = False,
+    *,
+    counterfactual: bool = False,
 ) -> List[Dict[str, Any]]:
     """Walk seeds with v2 replay; record delta at each decision step."""
     import os
@@ -139,6 +143,7 @@ def collect_decision_deltas(
                     act_timeout,
                     v2_agent,
                     rollout_opponent,
+                    counterfactual=counterfactual,
                 )
                 if rec is not None:
                     if only_differ and not rec.get("differ"):

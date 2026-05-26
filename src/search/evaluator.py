@@ -13,7 +13,7 @@ from src.world.state import World
 WEIGHT_HEURISTIC = 0.4
 WEIGHT_ROLLOUT = 0.4
 WEIGHT_MODEL = 0.2
-ROLLOUT_DEPTH = 6
+ROLLOUT_DEPTH = 12
 
 
 def score_candidates(

@@ -12,7 +12,7 @@ from src.world.step import StepState, simulate_one_turn
 
 
 def evaluate_step_state(state: StepState, player: int) -> float:
-    """Simple rollout leaf value: ship advantage + production weight."""
+    """Leaf value: ship/prod advantage minus incoming threat and fragile holdings."""
     my_ships = sum(int(p.ships) for p in state.planets if p.owner == player)
     my_ships += sum(
         ships for _, _, owner, ships in state.scheduled_arrivals if owner == player
@@ -32,7 +32,24 @@ def evaluate_step_state(state: StepState, player: int) -> float:
     total = my_ships + enemy_ships + 1
     ship_adv = (my_ships - enemy_ships) / total
     prod_adv = (my_prod - enemy_prod) / (my_prod + enemy_prod + 1)
-    return 0.7 * ship_adv + 0.3 * prod_adv
+
+    incoming_threat = 0.0
+    for _abs_step, planet_id, owner, ships in state.scheduled_arrivals:
+        planet = state.planet_by_id.get(planet_id)
+        if planet and planet.owner == player and owner not in (-1, player):
+            incoming_threat += ships / (total + 1)
+
+    fragile_penalty = 0.0
+    for p in state.planets:
+        if p.owner == player and int(p.ships) < 5 and int(p.production) <= 2:
+            fragile_penalty += 0.02
+
+    return (
+        0.6 * ship_adv
+        + 0.25 * prod_adv
+        - 0.10 * incoming_threat
+        - fragile_penalty
+    )
 
 
 def rollout(

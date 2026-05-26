@@ -2,46 +2,48 @@
   "phase": "C.5_signal_existence",
   "source": "/Users/97jiyu/Downloads/Orbit/probe_results/decision_delta_hybrid_frontier_v1.jsonl",
   "signal": "rollout_margin",
-  "n_diverged": 10,
-  "min_support": 2,
+  "n_diverged": 141,
+  "min_support": 5,
   "thresholds": {
     "spearman_structure": 0.25,
     "sign_baseline": 0.5
   },
   "global": {
-    "n": 10,
-    "spearman": null,
-    "pearson": null,
-    "mean_predicted": 0.0,
-    "mean_actual": -9.3,
-    "sign_accuracy_all": 1.0,
-    "sign_accuracy_directional": null,
-    "n_directional": 0,
-    "var_actual": 98.01111111111112,
-    "var_predicted": 0.0,
-    "var_error": 98.01111111111112,
-    "noise_ratio": 1.0,
-    "signal_ratio": 0.0,
-    "monotone_gain": false
+    "n": 141,
+    "spearman": 0.4643348215024836,
+    "pearson": 0.45882454824054303,
+    "mean_predicted": 0.011763161410221405,
+    "mean_actual": 11.581560283687944,
+    "sign_accuracy_all": 0.9716312056737588,
+    "sign_accuracy_directional": 0.8620689655172413,
+    "n_directional": 29,
+    "var_actual": 482.1165146909828,
+    "var_predicted": 0.0027146717334798685,
+    "var_error": 481.0694179109383,
+    "noise_ratio": 0.9978281250524769,
+    "signal_ratio": 5.630737904134779e-06,
+    "monotone_gain": true
   },
   "by_bucket": [
     {
       "bucket": "neutral_capture",
-      "n": 10,
-      "spearman": null,
-      "sign_accuracy_directional": null,
-      "noise_ratio": 1.0,
-      "signal_ratio": 0.0,
-      "has_local_structure": false,
+      "n": 141,
+      "spearman": 0.4643348215024836,
+      "sign_accuracy_directional": 0.8620689655172413,
+      "noise_ratio": 0.9978281250524769,
+      "signal_ratio": 5.630737904134779e-06,
+      "has_local_structure": true,
       "low_support": false
     }
   ],
   "existence_verdict": {
-    "case": "A",
-    "verdict": "No bucket shows rankable EV structure \u2014 rollout is not a value proxy.",
-    "recommended_route": "gate_veto_only",
-    "buckets_with_structure": [],
+    "case": "C",
+    "verdict": "Global monotonic value structure \u2014 value head / distillation may be viable.",
+    "recommended_route": "value_learning_candidate",
+    "buckets_with_structure": [
+      "neutral_capture"
+    ],
     "n_buckets_supported": 1,
-    "n_buckets_structured": 0
+    "n_buckets_structured": 1
   }
 }

@@ -80,6 +80,31 @@ def pick_legal_or_fallback(
     return filter_legal_moves(fallback, obs)
 
 
+def merge_override_move(
+    v2_moves: Sequence[Move],
+    override: Move,
+    obs: Any,
+) -> List[Move]:
+    """Keep v2 plan; replace same-source fleet or prepend one legal override."""
+    legal_v2 = filter_legal_moves(v2_moves, obs)
+    if not legal_v2 or not validate_move_for_obs(override, obs):
+        return legal_v2
+
+    ov = [int(override[0]), float(override[1]), int(override[2])]
+    src_id = ov[0]
+    out: List[Move] = []
+    replaced = False
+    for m in legal_v2:
+        if int(m[0]) == src_id and not replaced:
+            out.append(ov)
+            replaced = True
+        else:
+            out.append(list(m))
+    if not replaced:
+        out.insert(0, ov)
+    return filter_legal_moves(out, obs)
+
+
 def filter_legal_moves(moves: Sequence[Move], obs: Any) -> List[Move]:
     """Drop illegal moves; dedupe by (src, angle, ships) not applied here."""
     parsed = parse_observation(obs)

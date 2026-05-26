@@ -1,27 +1,78 @@
 {
-  "version": "gate_v1",
+  "version": "gate_v2",
   "source": "/Users/97jiyu/Downloads/Orbit/probe_results/decision_delta_hybrid_frontier_v1.jsonl",
   "target_reversal": 0.35,
   "min_support": 5,
-  "calibration_ready": false,
-  "n_diverged": 10,
-  "margin_monotone_decreasing": false,
-  "tau_margin_by_bucket": {},
+  "calibration_ready": true,
+  "n_diverged": 141,
+  "ece": 0.2582770990151215,
+  "margin_monotone_decreasing": true,
+  "decision_surface": {
+    "margin_bins": [
+      "0-2",
+      "2-5",
+      "5-10",
+      "10+"
+    ],
+    "buckets": [
+      "neutral_capture"
+    ],
+    "cells": {
+      "neutral_capture": {
+        "0-2": {
+          "tier": "green",
+          "support": 136,
+          "reversal_rate": 0.25735294117647056,
+          "reversal_ci_high": 0.3367839006382682,
+          "p_trust": 0.7426470588235294,
+          "ev_ship_diff": 11.154411764705882,
+          "p_improve": 0.7426470588235294,
+          "avg_gain": 23.023255813953487,
+          "avg_loss": -13.228571428571428
+        },
+        "10+": {
+          "tier": "yellow",
+          "support": 5,
+          "reversal_rate": 0.2,
+          "reversal_ci_high": 0.6244717358814613,
+          "p_trust": 0.3755282641185388,
+          "ev_ship_diff": 23.2,
+          "p_improve": 0.8,
+          "avg_gain": 29.25,
+          "avg_loss": -1.0
+        }
+      }
+    },
+    "target_reversal": 0.35,
+    "min_support": 5
+  },
+  "tau_margin_by_bucket": {
+    "neutral_capture": 0.0
+  },
   "disable_override_buckets": [],
+  "stochastic_override_buckets": [],
   "bucket_policy": {
     "neutral_capture": {
-      "action": "veto_pending_data",
-      "tau_margin": null,
-      "tau_bin": null,
-      "rationale": "no green bin; yellow/gray only \u2014 conservative veto",
-      "support_diverged": 10
+      "action": "override",
+      "mode": "deterministic",
+      "tau_margin": 0.0,
+      "tau_bin": "0-2",
+      "rationale": "green+EV>0 from bin 0-2",
+      "support_diverged": 141,
+      "best_ev_ship_diff": 23.2
     }
+  },
+  "tier_semantics": {
+    "green": "deterministic override if EV>0",
+    "yellow": "stochastic override with p=p_trust when EV>0",
+    "red": "veto \u2192 fallback v2",
+    "gray": "insufficient data \u2192 fallback v2"
   },
   "reversal_by_bucket_divergence_kind": [
     {
       "bucket": "neutral_capture",
       "divergence_kind": "different_presence",
-      "n_reversal": 5
+      "n_reversal": 36
     }
   ]
 }

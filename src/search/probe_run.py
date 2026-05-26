@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import importlib.util
 import json
+import sys
 import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -18,6 +20,32 @@ LOCAL_ACT_TIMEOUT = 999.0
 KAGGLE_ACT_TIMEOUT = 1.0
 
 AgentRef = Union[str, Callable[..., Any]]
+
+
+def resolve_agent(ref: AgentRef) -> Callable[..., Any]:
+    """Load probe agents as callables (kaggle path strings break hybrid PYTHONPATH)."""
+    if callable(ref):
+        return ref
+    path = Path(ref).resolve()
+    root = str(ROOT)
+    if root not in sys.path:
+        sys.path.insert(0, root)
+    if path.name == "hybrid_main.py":
+        import submission.hybrid_main as mod
+
+        return mod.agent
+    if path.name == "submission_v2.py":
+        import submission_v2 as mod
+
+        return mod.agent
+    spec = importlib.util.spec_from_file_location(f"probe_{path.stem}", path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"cannot load agent from {path}")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    if not hasattr(mod, "agent"):
+        raise AttributeError(f"{path} has no agent()")
+    return mod.agent
 
 
 @dataclass
@@ -135,7 +163,7 @@ def run_game(
         configuration={"seed": seed, "actTimeout": act_timeout},
     )
     t0 = time.perf_counter()
-    env.run(list(agents))
+    env.run([resolve_agent(a) for a in agents])
     dt = time.perf_counter() - t0
     final = env.steps[-1]
     timeouts, invalids = _scan_step_statuses(env)

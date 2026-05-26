@@ -24,7 +24,7 @@ HORIZON = SIM_HORIZON
 LAUNCH_CLEARANCE = 0.1
 
 EARLY_TURN_LIMIT = 40
-OPENING_TURN_LIMIT = 80
+OPENING_TURN_LIMIT = 60
 LATE_REMAINING_TURNS = 70          # was 60 — enter late-game earlier
 VERY_LATE_REMAINING_TURNS = 25
 TOTAL_WAR_REMAINING_TURNS = 55     # was 38 — endgame push starts sooner
@@ -33,9 +33,9 @@ SAFE_NEUTRAL_MARGIN = 2
 CONTESTED_NEUTRAL_MARGIN = 2
 INTERCEPT_TOLERANCE = 1
 
-SAFE_OPENING_PROD_THRESHOLD = 4
+SAFE_OPENING_PROD_THRESHOLD = 3
 SAFE_OPENING_TURN_LIMIT = 10
-ROTATING_OPENING_MAX_TURNS = 13
+ROTATING_OPENING_MAX_TURNS = 16
 ROTATING_OPENING_LOW_PROD = 2
 FOUR_PLAYER_ROTATING_REACTION_GAP = 3
 FOUR_PLAYER_ROTATING_SEND_RATIO = 0.55  # was 0.62 — less overcommit in 4P
@@ -159,10 +159,10 @@ CRASH_EXPLOIT_ETA_WINDOW = 3        # was 2 — wider window
 CRASH_EXPLOIT_POST_CRASH_DELAY = 1
 
 # Hostile reinforcement prediction — model enemy self-defense when attacking
-HOSTILE_REINFORCE_FRACTION = 0.5    # assume enemy commits ~50% of allied garrison
-HOSTILE_REINFORCE_MAX_SOURCES = 3   # cap modeled reinforcing allies per target
+HOSTILE_REINFORCE_FRACTION = 0.65   # assume enemy commits ~65% of allied garrison
+HOSTILE_REINFORCE_MAX_SOURCES = 4   # cap modeled reinforcing allies per target
 HOSTILE_REINFORCE_MIN_SHIPS = 4     # ignore tiny allies
-HOSTILE_REINFORCE_SLACK = 0         # extra turns beyond our ETA we still model
+HOSTILE_REINFORCE_SLACK = 2         # extra turns beyond our ETA we still model
 
 LATE_IMMEDIATE_SHIP_VALUE = 0.75
 WEAK_ENEMY_THRESHOLD = 110          # was 60 — detect weak enemies earlier
@@ -1612,11 +1612,16 @@ def reinforce_value(target, hold_until, world, policy):
 
 def preferred_send(target, base_needed, arrival_turns, src_available, world, modes, policy):
     send = max(base_needed, int(math.ceil(base_needed * modes["attack_margin_mult"])))
+    time_pressure = 1.0 - (world.remaining_steps / TOTAL_STEPS)
+    margin_scale = max(0.5, 1.0 - time_pressure * 0.4)
     margin = 0
     if target.owner == -1:
         margin += min(
             NEUTRAL_MARGIN_CAP,
-            NEUTRAL_MARGIN_BASE + target.production * NEUTRAL_MARGIN_PROD_WEIGHT,
+            int(
+                (NEUTRAL_MARGIN_BASE + target.production * NEUTRAL_MARGIN_PROD_WEIGHT)
+                * margin_scale
+            ),
         )
     else:
         margin += min(
@@ -3332,38 +3337,26 @@ def plan_moves(world, deadline=None):
         else:
             primary_targets = world.enemy_planets
 
-        # Attack weakest enemy first, then others
-        for target_set in [primary_targets, world.enemy_planets]:
-            if not target_set:
+        all_targets = list(primary_targets)
+        for ep in world.enemy_planets:
+            if ep not in all_targets:
+                all_targets.append(ep)
+
+        for src in world.my_planets:
+            if expired():
+                return finalize_moves()
+            atk_left = source_attack_left(src.id)
+            if atk_left < 5:
                 continue
-            for src in world.my_planets:
-                if expired():
-                    return finalize_moves()
-                atk_left = source_attack_left(src.id)
-                if atk_left < 5:
-                    continue
-
-                # Find best target from current set
-                best_target = None
-                best_dist = float('inf')
-                for ep in target_set:
-                    d = planet_distance(src, ep)
-                    if d < best_dist:
-                        aim_test = world.plan_shot(src.id, ep.id, atk_left)
-                        if aim_test is not None:
-                            best_dist = d
-                            best_target = ep
-
-                if best_target is None:
-                    continue
-                aim = world.plan_shot(src.id, best_target.id, atk_left)
+            for ep in sorted(all_targets, key=lambda t: planet_distance(src, t)):
+                aim = world.plan_shot(src.id, ep.id, atk_left)
                 if aim is None:
                     continue
                 angle, turns, _, _ = aim
                 if turns >= world.remaining_steps:
                     continue
                 append_move(src.id, angle, atk_left)
-            break  # Only run primary targets set; secondary is backup
+                break
 
     return finalize_moves()
 
