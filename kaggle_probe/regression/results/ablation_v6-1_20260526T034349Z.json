@@ -1,0 +1,27 @@
+{
+  "id": "v6-1",
+  "layer": "L3",
+  "description": "COMPETITION_PRESSURE_HARD/SOFT + target_value block",
+  "output_file": "submission_ablation_v6_1.py",
+  "generated_at_utc": "2026-05-26T03:16:12Z",
+  "baseline": "submission_v2.py",
+  "local_ab": {
+    "exit_code": 0,
+    "pair": 0,
+    "ffa": {
+      "win_rate_pct": 0.0,
+      "wins": 0,
+      "losses": 1,
+      "ties": 9,
+      "verdict": "REGRESSED"
+    },
+    "kaggle_timeout": true,
+    "raw_verdict": null,
+    "wins": null,
+    "losses": null,
+    "ties": null,
+    "log": "regression/results/local_ab_v6-1_vs_submission_v2.log"
+  },
+  "status": "completed",
+  "elapsed_s": 1656.5
+}

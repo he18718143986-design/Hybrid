@@ -1,0 +1,98 @@
+
+============================================================
+Experiment: v6p2
+============================================================
+Generated: /Users/97jiyu/Downloads/Orbit/submission_ablation_v6p2.py (118280 bytes)
+
+--- regression layers-only (v6p2) ---
+/Users/97jiyu/Downloads/Orbit/.venv/bin/python /Users/97jiyu/Downloads/Orbit/regression_test.py --baseline submission_v2.py --candidate /Users/97jiyu/Downloads/Orbit/submission_ablation_v6p2.py --layers-only
+Loading environment cabt failed: dlopen(/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so, 0x0006): tried: '/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (slice is not valid mach-o file), '/System/Volumes/Preboot/Cryptexes/OS/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (no such file), '/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (slice is not valid mach-o file)
+[PASS] baseline: SHA256 matches BASELINE.lock — lock=710d3ff438a2 file=710d3ff438a2
+
+=== Regression: submission_v2.py ===
+  [PASS] [L4] combat: multi-attacker tie-break                        owner=-1 ships=9.0 (expect -1, 9)
+  [PASS] [L2] geometry: segment_hits_sun                              through_center=True low_path=False
+  [PASS] [L1] world: predict_planet_position rotates                  delta=(-1.2242,4.7943)
+  [PASS] [L1] world: fleet_target_planet static (A1)                  hit=1 eta=24
+  [PASS] [L2] geometry: plan_shot safe on static targets (seed=42)    static=36 bad=0 moving_smoke=9
+  [PASS] [L1] world: arrival ledger built (seed=42)                   fleets=0 ledger_entries=0
+  [PASS] [L4] combat: detect_enemy_planet_battles (A2 seed=42)        battles=0
+  [PASS] [L4] combat: hostile_reinforcement_arrivals (B1 seed=42)     extras=0
+  [PASS] [L2] geometry: plan_shot safe on static targets (seed=1000)  static=39 bad=0 moving_smoke=36
+  [PASS] [L1] world: arrival ledger built (seed=1000)                 fleets=0 ledger_entries=0
+  [PASS] [L4] combat: detect_enemy_planet_battles (A2 seed=1000)      battles=0
+  [PASS] [L4] combat: hostile_reinforcement_arrivals (B1 seed=1000)   extras=0
+  [PASS] [L2] geometry: plan_shot safe on static targets (seed=2000)  static=57 bad=0 moving_smoke=18
+  [PASS] [L1] world: arrival ledger built (seed=2000)                 fleets=0 ledger_entries=0
+  [PASS] [L4] combat: detect_enemy_planet_battles (A2 seed=2000)      battles=0
+  [PASS] [L4] combat: hostile_reinforcement_arrivals (B1 seed=2000)   extras=0
+
+  16/16 passed
+
+=== Regression: submission_ablation_v6p2.py ===
+  [PASS] [L4] combat: multi-attacker tie-break                        owner=-1 ships=9.0 (expect -1, 9)
+  [PASS] [L2] geometry: segment_hits_sun                              through_center=True low_path=False
+  [PASS] [L1] world: predict_planet_position rotates                  delta=(-1.2242,4.7943)
+  [PASS] [L1] world: fleet_target_planet static (A1)                  hit=1 eta=24
+  [PASS] [L2] geometry: plan_shot safe on static targets (seed=42)    static=36 bad=0 moving_smoke=9
+  [PASS] [L1] world: arrival ledger built (seed=42)                   fleets=0 ledger_entries=0
+  [PASS] [L4] combat: detect_enemy_planet_battles (A2 seed=42)        battles=0
+  [PASS] [L4] combat: hostile_reinforcement_arrivals (B1 seed=42)     extras=0
+  [PASS] [L2] geometry: plan_shot safe on static targets (seed=1000)  static=39 bad=0 moving_smoke=36
+  [PASS] [L1] world: arrival ledger built (seed=1000)                 fleets=0 ledger_entries=0
+  [PASS] [L4] combat: detect_enemy_planet_battles (A2 seed=1000)      battles=0
+  [PASS] [L4] combat: hostile_reinforcement_arrivals (B1 seed=1000)   extras=0
+  [PASS] [L2] geometry: plan_shot safe on static targets (seed=2000)  static=57 bad=0 moving_smoke=18
+  [PASS] [L1] world: arrival ledger built (seed=2000)                 fleets=0 ledger_entries=0
+  [PASS] [L4] combat: detect_enemy_planet_battles (A2 seed=2000)      battles=0
+  [PASS] [L4] combat: hostile_reinforcement_arrivals (B1 seed=2000)   extras=0
+
+  16/16 passed
+
+Results written: /Users/97jiyu/Downloads/Orbit/regression/results/latest.json
+
+REGRESSION: ALL PASSED
+
+
+--- local_ab (v6p2) ---
+/Users/97jiyu/Downloads/Orbit/.venv/bin/python /Users/97jiyu/Downloads/Orbit/local_ab.py --new /Users/97jiyu/Downloads/Orbit/submission_ablation_v6p2.py --old submission_v2.py --pair 10 --ffa 0 --kaggle-timeout
+Loading environment cabt failed: dlopen(/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so, 0x0006): tried: '/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (slice is not valid mach-o file), '/System/Volumes/Preboot/Cryptexes/OS/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (no such file), '/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (slice is not valid mach-o file)
+NEW agent: /Users/97jiyu/Downloads/Orbit/submission_ablation_v6p2.py
+OLD agent: /Users/97jiyu/Downloads/Orbit/submission_v2.py
+Plan: 10 1v1 games + 0 4P games
+actTimeout: Kaggle (1.0s)
+
+--- 1v1: 10 games ---
+  [  1/10] seed=1000 new_idx=0 rewards=[-1, 1] winner=OLD time=277.0s
+  [  2/10] seed=1001 new_idx=1 rewards=[1, 1] winner=TIE time=26.7s
+  [  3/10] seed=1002 new_idx=0 rewards=[1, 1] winner=TIE time=48.7s
+  [  4/10] seed=1003 new_idx=1 rewards=[1, 1] winner=TIE time=29.8s
+  [  5/10] seed=1004 new_idx=0 rewards=[1, 1] winner=TIE time=47.4s
+  [  6/10] seed=1005 new_idx=1 rewards=[1, 1] winner=TIE time=37.4s
+  [  7/10] seed=1006 new_idx=0 rewards=[1, 1] winner=TIE time=35.6s
+  [  8/10] seed=1007 new_idx=1 rewards=[1, 1] winner=TIE time=40.1s
+  [  9/10] seed=1008 new_idx=0 rewards=[1, 1] winner=TIE time=48.1s
+  [ 10/10] seed=1009 new_idx=1 rewards=[1, 1] winner=TIE time=35.7s
+
+=== 1v1 RESULTS ===
+  games:       10
+  wins:        0
+  losses:      1
+  ties:        9
+  win rate:    0.0%
+  avg time:    62.7s per game
+  invalid:     0
+
+========================================================
+FINAL VERDICT
+========================================================
+   1v1: 0.0% win rate  (0W/1L/9T)  -> REGRESSED
+
+Thresholds: >55% win = IMPROVED, <45% win with losses = REGRESSED.
+All ties = evenly matched in this matchup (not a regression).
+
+
+Result: /Users/97jiyu/Downloads/Orbit/regression/results/ablation_v6p2_20260526T023714Z.json
+Status: completed (640.9s)
+
+All 1 experiment(s) OK.

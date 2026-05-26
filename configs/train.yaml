@@ -1,0 +1,9 @@
+data:
+  replays_dir: data/replays
+  rollouts_dir: data/rollouts
+  states_out: data/datasets/states.parquet
+  candidates_out: data/datasets/candidates.parquet
+
+train:
+  value_model: lightgbm  # or mlp
+  epochs: 50

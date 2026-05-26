@@ -1,0 +1,10 @@
+{
+  "production_file": "submission_v2.py",
+  "version_tag": "814",
+  "sha256": "710d3ff438a200b2e382479f149734dde03a3d11494fb9c981203882c3122996",
+  "sha256_short": "710d3ff438a2",
+  "lines": 3424,
+  "locked_at_utc": "2026-05-25T07:54:30Z",
+  "git_commit_short": "N/A",
+  "policy": "All experiments branch from submission_v2.py. Do not edit in place."
+}

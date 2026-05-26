@@ -1,0 +1,15 @@
+{
+  "n_total": 10,
+  "n_reversal": 5,
+  "by_failure_tag": {
+    "overextended_neutral": {
+      "n": 5,
+      "avg_ship_diff": -18.6,
+      "avg_margin": 0.0,
+      "buckets": {
+        "neutral_capture": 5
+      }
+    }
+  },
+  "source": "/Users/97jiyu/Downloads/Orbit/probe_results/decision_delta_hybrid_frontier_v1.jsonl"
+}

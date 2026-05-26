@@ -1,0 +1,11 @@
+{
+  "description": "Fixed 30 seeds for Hybrid probe matrix v1. Do not reorder; append new seeds at end.",
+  "version": "probe_v1",
+  "seeds": [
+    1000, 1001, 1002, 1003, 1004,
+    1100, 1101, 1102,
+    5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009,
+    5010, 5011, 5012, 5013, 5014, 5015, 5016, 5017, 5018, 5019,
+    5020, 5021, 5022
+  ]
+}

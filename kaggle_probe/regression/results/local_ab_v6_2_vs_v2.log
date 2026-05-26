@@ -1,0 +1,34 @@
+Loading environment cabt failed: dlopen(/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so, 0x0006): tried: '/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (slice is not valid mach-o file), '/System/Volumes/Preboot/Cryptexes/OS/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (no such file), '/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (slice is not valid mach-o file)
+NEW agent: /Users/97jiyu/Downloads/Orbit/submission_ablation_v6_2.py
+OLD agent: /Users/97jiyu/Downloads/Orbit/submission_v2.py
+Plan: 10 1v1 games + 0 4P games
+actTimeout: Kaggle (1.0s)
+
+--- 1v1: 10 games ---
+  [  1/10] seed=1000 new_idx=0 rewards=[-1, 1] winner=OLD time=274.6s
+  [  2/10] seed=1001 new_idx=1 rewards=[1, 1] winner=TIE time=27.5s
+  [  3/10] seed=1002 new_idx=0 rewards=[1, 1] winner=TIE time=49.8s
+  [  4/10] seed=1003 new_idx=1 rewards=[1, 1] winner=TIE time=31.0s
+  [  5/10] seed=1004 new_idx=0 rewards=[1, 1] winner=TIE time=48.6s
+  [  6/10] seed=1005 new_idx=1 rewards=[1, 1] winner=TIE time=41.7s
+  [  7/10] seed=1006 new_idx=0 rewards=[1, 1] winner=TIE time=37.3s
+  [  8/10] seed=1007 new_idx=1 rewards=[1, 1] winner=TIE time=41.2s
+  [  9/10] seed=1008 new_idx=0 rewards=[1, 1] winner=TIE time=49.8s
+  [ 10/10] seed=1009 new_idx=1 rewards=[1, 1] winner=TIE time=40.8s
+
+=== 1v1 RESULTS ===
+  games:       10
+  wins:        0
+  losses:      1
+  ties:        9
+  win rate:    0.0%
+  avg time:    64.2s per game
+  invalid:     0
+
+========================================================
+FINAL VERDICT
+========================================================
+   1v1: 0.0% win rate  (0W/1L/9T)  -> REGRESSED
+
+Thresholds: >55% win = IMPROVED, <45% win with losses = REGRESSED.
+All ties = evenly matched in this matchup (not a regression).

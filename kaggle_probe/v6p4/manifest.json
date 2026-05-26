@@ -1,0 +1,15 @@
+{
+  "experiment_id": "v6p4",
+  "layer": "L4",
+  "description": "GANG_UP_VALUE_MULT 1.4\u21921.55",
+  "source_file": "submission_ablation_v6p4.py",
+  "baseline_file": "submission_v2.py",
+  "baseline_sha256_short": "710d3ff438a2",
+  "candidate_sha256_short": "2eb435b7cad4",
+  "baseline_score_target": 814,
+  "prepared_at_utc": "2026-05-26T04:52:41Z",
+  "regression": {
+    "exit_code": 0,
+    "passed": true
+  }
+}

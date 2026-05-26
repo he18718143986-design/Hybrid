@@ -1,0 +1,47 @@
+{
+  "phase": "C.5_signal_existence",
+  "source": "/Users/97jiyu/Downloads/Orbit/probe_results/decision_delta_hybrid_frontier_v1.jsonl",
+  "signal": "rollout_margin",
+  "n_diverged": 10,
+  "min_support": 2,
+  "thresholds": {
+    "spearman_structure": 0.25,
+    "sign_baseline": 0.5
+  },
+  "global": {
+    "n": 10,
+    "spearman": null,
+    "pearson": null,
+    "mean_predicted": 0.0,
+    "mean_actual": -9.3,
+    "sign_accuracy_all": 1.0,
+    "sign_accuracy_directional": null,
+    "n_directional": 0,
+    "var_actual": 98.01111111111112,
+    "var_predicted": 0.0,
+    "var_error": 98.01111111111112,
+    "noise_ratio": 1.0,
+    "signal_ratio": 0.0,
+    "monotone_gain": false
+  },
+  "by_bucket": [
+    {
+      "bucket": "neutral_capture",
+      "n": 10,
+      "spearman": null,
+      "sign_accuracy_directional": null,
+      "noise_ratio": 1.0,
+      "signal_ratio": 0.0,
+      "has_local_structure": false,
+      "low_support": false
+    }
+  ],
+  "existence_verdict": {
+    "case": "A",
+    "verdict": "No bucket shows rankable EV structure \u2014 rollout is not a value proxy.",
+    "recommended_route": "gate_veto_only",
+    "buckets_with_structure": [],
+    "n_buckets_supported": 1,
+    "n_buckets_structured": 0
+  }
+}

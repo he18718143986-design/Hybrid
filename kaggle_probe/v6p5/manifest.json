@@ -1,0 +1,15 @@
+{
+  "experiment_id": "v6p5",
+  "layer": "L4",
+  "description": "WEAKEST_ENEMY_VALUE_MULT_4P 1.5\u21921.7",
+  "source_file": "submission_ablation_v6p5.py",
+  "baseline_file": "submission_v2.py",
+  "baseline_sha256_short": "710d3ff438a2",
+  "candidate_sha256_short": "3c787c226687",
+  "baseline_score_target": 814,
+  "prepared_at_utc": "2026-05-26T05:00:51Z",
+  "regression": {
+    "exit_code": 0,
+    "passed": true
+  }
+}

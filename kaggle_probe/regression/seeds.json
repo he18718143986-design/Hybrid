@@ -1,0 +1,8 @@
+{
+  "description": "Fixed seeds for reproducible regression. Do not reorder; append new seeds at end.",
+  "seeds_1v1_vs_random": [1000, 1001, 1002, 1003, 1004],
+  "seeds_1v1_vs_baseline": [1100, 1101, 1102],
+  "seeds_4p_vs_baseline": [2000, 2001, 2002],
+  "replay_steps": [1, 25, 50, 100],
+  "replay_seeds_for_layer_tests": [42, 1000, 2000]
+}

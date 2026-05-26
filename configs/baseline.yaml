@@ -1,0 +1,18 @@
+# Production-equivalent: submission_v2 via ORBIT_AGENT_MODE=v2 (default)
+agent_mode: v2
+act_timeout: 1.0
+soft_act_cap: 0.82
+soft_act_floor: 0.55
+
+candidate:
+  top_k_per_mission: 3
+  max_missions: 16
+
+search:
+  enabled: false
+  rollout_depth: 6
+  max_candidates: 8
+
+model:
+  enabled: false
+  value_weight: 0.2

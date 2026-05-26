@@ -1,0 +1,35 @@
+Loading environment cabt failed: dlopen(/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so, 0x0006): tried: '/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (slice is not valid mach-o file), '/System/Volumes/Preboot/Cryptexes/OS/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (no such file), '/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (slice is not valid mach-o file)
+NEW agent: /Users/97jiyu/Downloads/Orbit/submission_ablation_v6p3.py
+OLD agent: /Users/97jiyu/Downloads/Orbit/submission_v2.py
+Plan: 10 1v1 games + 0 4P games
+actTimeout: Kaggle (1.0s)
+
+--- 1v1: 10 games ---
+  [  1/10] seed=1000 new_idx=0 rewards=[1, -1] winner=NEW time=302.9s
+  [  2/10] seed=1001 new_idx=1 rewards=[1, 1] winner=TIE time=27.8s
+  [  3/10] seed=1002 new_idx=0 rewards=[1, 1] winner=TIE time=49.6s
+  [  4/10] seed=1003 new_idx=1 rewards=[1, 1] winner=TIE time=30.8s
+  [  5/10] seed=1004 new_idx=0 rewards=[1, 1] winner=TIE time=47.8s
+  [  6/10] seed=1005 new_idx=1 rewards=[1, 1] winner=TIE time=38.4s
+  [  7/10] seed=1006 new_idx=0 rewards=[1, 1] winner=TIE time=36.3s
+  [  8/10] seed=1007 new_idx=1 rewards=[1, 1] winner=TIE time=40.4s
+  [  9/10] seed=1008 new_idx=0 rewards=[1, 1] winner=TIE time=48.6s
+  [ 10/10] seed=1009 new_idx=1 rewards=[1, 1] winner=TIE time=36.4s
+
+=== 1v1 RESULTS ===
+  games:       10
+  wins:        1
+  losses:      0
+  ties:        9
+  win rate:    10.0%
+  elo delta:   -382 (estimated)
+  avg time:    65.9s per game
+  invalid:     0
+
+========================================================
+FINAL VERDICT
+========================================================
+   1v1: 10.0% win rate  (1W/0L/9T)  -> INCONCLUSIVE  (~-382 elo)
+
+Thresholds: >55% win = IMPROVED, <45% win with losses = REGRESSED.
+All ties = evenly matched in this matchup (not a regression).

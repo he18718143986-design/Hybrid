@@ -1,0 +1,14 @@
+{
+  "id": "v6p3",
+  "layer": "L4",
+  "description": "MULTI_ENEMY_PROACTIVE_RATIO 0.35\u21920.28",
+  "output_file": "submission_ablation_v6p3.py",
+  "generated_at_utc": "2026-05-26T02:24:40Z",
+  "baseline": "submission_v2.py",
+  "regression": {
+    "exit_code": 0,
+    "passed": true
+  },
+  "status": "completed",
+  "elapsed_s": 9.1
+}

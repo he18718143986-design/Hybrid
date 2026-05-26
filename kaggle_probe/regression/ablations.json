@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "baseline_file": "submission_v2.py",
+  "baseline_sha256_short": "710d3ff438a2",
+  "default_opponent": "submission_v2.py",
+  "default_ab": {
+    "pair": 10,
+    "ffa": 0,
+    "kaggle_timeout": true
+  },
+  "experiments": {
+    "v6p1": {
+      "layer": "L4",
+      "description": "HOSTILE_SWARM_ETA_TOLERANCE 1→2",
+      "output_file": "submission_ablation_v6p1.py",
+      "patch_ops": [
+        {
+          "op": "replace_line_contains",
+          "contains": "HOSTILE_SWARM_ETA_TOLERANCE = 1",
+          "replacement": "HOSTILE_SWARM_ETA_TOLERANCE = 2  # ablation v6-p1: was 1 (v2)"
+        }
+      ]
+    },
+    "v6p3": {
+      "layer": "L4",
+      "description": "MULTI_ENEMY_PROACTIVE_RATIO 0.35→0.28",
+      "output_file": "submission_ablation_v6p3.py",
+      "patch_ops": [
+        {
+          "op": "replace_line_contains",
+          "contains": "MULTI_ENEMY_PROACTIVE_RATIO = 0.35",
+          "replacement": "MULTI_ENEMY_PROACTIVE_RATIO = 0.28  # ablation v6-p3: was 0.35 (v2)"
+        }
+      ]
+    },
+    "v6-1": {
+      "layer": "L3",
+      "description": "COMPETITION_PRESSURE_HARD/SOFT + target_value block",
+      "output_file": "submission_ablation_v6_1.py",
+      "patch_ops": [
+        {
+          "op": "insert_after_line_contains",
+          "contains": "GANG_UP_ETA_WINDOW = 4",
+          "text": "\nCOMPETITION_PRESSURE_HARD = 0.28  # ablation v6-1: enemy arrives 4+ turns before us\nCOMPETITION_PRESSURE_SOFT = 0.62  # ablation v6-1: enemy arrives 1-3 turns before us"
+        },
+        {
+          "op": "insert_after_line_contains",
+          "contains": "            value *= EARLY_NEUTRAL_VALUE_MULT",
+          "text": "\n\n        if mission not in (\"snipe\",):\n            _, enemy_t = policy_reaction_times(target.id, policy)\n            if enemy_t < 10**9:\n                if arrival_turns > enemy_t + 4:\n                    value *= COMPETITION_PRESSURE_HARD\n                elif arrival_turns > enemy_t + 1:\n                    value *= COMPETITION_PRESSURE_SOFT"
+        }
+      ]
+    },
+    "v6-2": {
+      "layer": "L3",
+      "description": "HIGH_PROD_BONUS_THRESHOLD/PER_POINT + target_value block",
+      "output_file": "submission_ablation_v6_2.py",
+      "patch_ops": [
+        {
+          "op": "insert_after_line_contains",
+          "contains": "GANG_UP_ETA_WINDOW = 4",
+          "text": "\nHIGH_PROD_BONUS_THRESHOLD = 3       # ablation v6-2: prod above this gets extra value\nHIGH_PROD_BONUS_PER_POINT = 0.12    # ablation v6-2: 12% per point above threshold"
+        },
+        {
+          "op": "insert_after_line_contains",
+          "contains": "    value += policy[\"indirect_wealth_map\"][target.id] * turns_profit * INDIRECT_VALUE_SCALE",
+          "text": "\n\n    if target.production > HIGH_PROD_BONUS_THRESHOLD:\n        extra_prod = target.production - HIGH_PROD_BONUS_THRESHOLD\n        value *= 1.0 + extra_prod * HIGH_PROD_BONUS_PER_POINT"
+        }
+      ]
+    },
+    "v6-3": {
+      "layer": "L3",
+      "description": "PROD_BEHIND_NEUTRAL_MULT + build_modes.is_prod_behind",
+      "output_file": "submission_ablation_v6_3.py",
+      "patch_ops": [
+        {
+          "op": "insert_after_line_contains",
+          "contains": "GANG_UP_ETA_WINDOW = 4",
+          "text": "\nPROD_BEHIND_NEUTRAL_MULT = 1.18   # ablation v6-3: extra neutral value when prod behind"
+        },
+        {
+          "op": "replace_block",
+          "old": "    is_finishing = (\n        domination > FINISHING_DOMINATION\n        and world.my_prod > world.enemy_prod * FINISHING_PROD_RATIO\n        and world.step > 80\n    )\n\n    attack_margin_mult = 1.0",
+          "new": "    is_finishing = (\n        domination > FINISHING_DOMINATION\n        and world.my_prod > world.enemy_prod * FINISHING_PROD_RATIO\n        and world.step > 80\n    )\n\n    avg_enemy_prod = world.enemy_prod / max(1, world.num_players - 1)\n    prod_ratio = world.my_prod / max(1, avg_enemy_prod)\n    is_prod_behind = prod_ratio < 0.85\n\n    attack_margin_mult = 1.0"
+        },
+        {
+          "op": "insert_after_line_contains",
+          "contains": "        \"is_finishing\": is_finishing,",
+          "text": "\n        \"is_prod_behind\": is_prod_behind,\n        \"prod_ratio\": prod_ratio,"
+        },
+        {
+          "op": "insert_after_line_contains",
+          "contains": "            value *= EARLY_NEUTRAL_VALUE_MULT",
+          "text": "\n\n        if modes.get(\"is_prod_behind\"):\n            value *= PROD_BEHIND_NEUTRAL_MULT"
+        }
+      ]
+    },
+    "v6p2": {
+      "layer": "L5",
+      "description": "FOUR_PLAYER_ROTATING_SEND_RATIO 0.55→0.62",
+      "output_file": "submission_ablation_v6p2.py",
+      "patch_ops": [
+        {
+          "op": "replace_line_contains",
+          "contains": "FOUR_PLAYER_ROTATING_SEND_RATIO = 0.55",
+          "replacement": "FOUR_PLAYER_ROTATING_SEND_RATIO = 0.62  # ablation v6-p2: was 0.55 (v2)"
+        }
+      ]
+    },
+    "v6p4": {
+      "layer": "L4",
+      "description": "GANG_UP_VALUE_MULT 1.4→1.55",
+      "output_file": "submission_ablation_v6p4.py",
+      "patch_ops": [
+        {
+          "op": "replace_line_contains",
+          "contains": "GANG_UP_VALUE_MULT = 1.4",
+          "replacement": "GANG_UP_VALUE_MULT = 1.55  # ablation v6-p4: was 1.4 (v2)"
+        }
+      ]
+    },
+    "v6p5": {
+      "layer": "L4",
+      "description": "WEAKEST_ENEMY_VALUE_MULT_4P 1.5→1.7",
+      "output_file": "submission_ablation_v6p5.py",
+      "patch_ops": [
+        {
+          "op": "replace_line_contains",
+          "contains": "WEAKEST_ENEMY_VALUE_MULT_4P = 1.5",
+          "replacement": "WEAKEST_ENEMY_VALUE_MULT_4P = 1.7  # ablation v6-p5: was 1.5 (v2)"
+        }
+      ]
+    },
+    "v6p6": {
+      "layer": "L3",
+      "description": "FOUR_PLAYER_ROTATING_NEUTRAL_SCORE_MULT 0.84→0.95",
+      "output_file": "submission_ablation_v6p6.py",
+      "patch_ops": [
+        {
+          "op": "replace_line_contains",
+          "contains": "FOUR_PLAYER_ROTATING_NEUTRAL_SCORE_MULT = 0.84",
+          "replacement": "FOUR_PLAYER_ROTATING_NEUTRAL_SCORE_MULT = 0.95  # ablation v6-p6: was 0.84 (v2)"
+        }
+      ]
+    },
+    "v6p7": {
+      "layer": "L4",
+      "description": "GANG_UP_ETA_WINDOW 4→5",
+      "output_file": "submission_ablation_v6p7.py",
+      "patch_ops": [
+        {
+          "op": "replace_line_contains",
+          "contains": "GANG_UP_ETA_WINDOW = 4",
+          "replacement": "GANG_UP_ETA_WINDOW = 5  # ablation v6-p7: was 4 (v2)"
+        }
+      ]
+    },
+    "v6p3_v6_1": {
+      "layer": "L4+L3",
+      "description": "MULTI_ENEMY_PROACTIVE 0.28 + COMPETITION_PRESSURE_*",
+      "output_file": "submission_ablation_v6p3_v6_1.py",
+      "extends": ["v6p3", "v6-1"],
+      "header": [
+        "# %%writefile submission.py",
+        "# ablation combo v6p3+v6-1 (L4+L3): MULTI_ENEMY_PROACTIVE 0.28 + COMPETITION_PRESSURE_*; base submission_v2.py @ 710d3ff438a2",
+        "# 814 (parent score — not validated on Kaggle)"
+      ]
+    }
+  }
+}

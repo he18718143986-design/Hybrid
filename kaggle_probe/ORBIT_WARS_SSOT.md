@@ -1,0 +1,204 @@
+# Orbit Wars 常量 SSOT
+
+> **自动生成 — 勿手改**
+
+## 生成元数据
+
+| 字段 | 值 |
+|------|-----|
+| 生成时间 (UTC) | `2026-05-25T07:22:37Z` |
+| Git commit | `N/A` |
+| Git commit (short) | `N/A` |
+| Git branch | `N/A` |
+| 工作区 dirty | unknown (not a git repo or git unavailable) |
+| 生产源文件 | `submission_v2.py` |
+| 生产 version 注释 | `814` |
+| 生产 SHA256 | `710d3ff438a200b2e382479f149734dde03a3d11494fb9c981203882c3122996` |
+| 生产 SHA256 (short) | `710d3ff438a2` |
+| 生产行数 | 3424 |
+| 实验源文件 | `submission_v6.py` |
+| 实验 version 注释 | `v6-minimal: v2 + competition/high-prod/prod-behind heuristics` |
+| 实验 SHA256 (short) | `5d228dee6d6c` |
+| 实验行数 | 3451 |
+| v2↔v6 diff 行数 (+/-) | 37 |
+
+重新生成：
+
+```bash
+.venv/bin/python scripts/dump_ssot.py
+```
+
+复核 v2↔v6 diff：
+
+```bash
+diff -u submission_v2.py submission_v6.py | grep -E '^\+|^-' | grep -vE '^\+\+\+|^---' | wc -l
+wc -l submission_v2.py submission_v6.py
+```
+
+## 生产常量（submission_v2.py）
+
+| 常量 | 值 | 层级（启发式） |
+|------|-----|----------------|
+| `BOARD` | `100.0` | — |
+| `CENTER_X` | `50.0` | — |
+| `CENTER_Y` | `50.0` | — |
+| `SUN_R` | `10.0` | — |
+| `MAX_SPEED` | `6.0` | — |
+| `SUN_SAFETY` | `1.5` | — |
+| `ROTATION_LIMIT` | `50.0` | — |
+| `TOTAL_STEPS` | `500` | — |
+| `SIM_HORIZON` | `110` | L1 |
+| `ROUTE_SEARCH_HORIZON` | `60` | L1 |
+| `HORIZON` | `SIM_HORIZON` | L1 |
+| `LAUNCH_CLEARANCE` | `0.1` | — |
+| `EARLY_TURN_LIMIT` | `40` | L5 |
+| `OPENING_TURN_LIMIT` | `80` | L5 |
+| `LATE_REMAINING_TURNS` | `70` | L5 |
+| `VERY_LATE_REMAINING_TURNS` | `25` | L5 |
+| `TOTAL_WAR_REMAINING_TURNS` | `55` | L5 |
+| `SAFE_NEUTRAL_MARGIN` | `2` | L3 |
+| `CONTESTED_NEUTRAL_MARGIN` | `2` | L3 |
+| `INTERCEPT_TOLERANCE` | `1` | — |
+| `SAFE_OPENING_PROD_THRESHOLD` | `4` | — |
+| `SAFE_OPENING_TURN_LIMIT` | `10` | L5 |
+| `ROTATING_OPENING_MAX_TURNS` | `13` | — |
+| `ROTATING_OPENING_LOW_PROD` | `2` | — |
+| `FOUR_PLAYER_ROTATING_REACTION_GAP` | `3` | L5 |
+| `FOUR_PLAYER_ROTATING_SEND_RATIO` | `0.55` | L5 |
+| `FOUR_PLAYER_ROTATING_TURN_LIMIT` | `10` | L5 |
+| `COMET_MAX_CHASE_TURNS` | `10` | — |
+| `ATTACK_COST_TURN_WEIGHT` | `0.50` | L3 |
+| `SNIPE_COST_TURN_WEIGHT` | `0.42` | L3 |
+| `INDIRECT_VALUE_SCALE` | `0.15` | — |
+| `INDIRECT_FRIENDLY_WEIGHT` | `0.35` | — |
+| `INDIRECT_NEUTRAL_WEIGHT` | `0.9` | — |
+| `INDIRECT_ENEMY_WEIGHT` | `1.25` | — |
+| `STATIC_NEUTRAL_VALUE_MULT` | `1.4` | L3 |
+| `STATIC_HOSTILE_VALUE_MULT` | `1.65` | L3 |
+| `ROTATING_OPENING_VALUE_MULT` | `0.9` | L3 |
+| `HOSTILE_TARGET_VALUE_MULT` | `2.05` | L3 |
+| `OPENING_HOSTILE_TARGET_VALUE_MULT` | `1.55` | L3 |
+| `SAFE_NEUTRAL_VALUE_MULT` | `1.2` | L3 |
+| `CONTESTED_NEUTRAL_VALUE_MULT` | `0.7` | L3 |
+| `EARLY_NEUTRAL_VALUE_MULT` | `1.2` | L3 |
+| `COMET_VALUE_MULT` | `0.65` | L3 |
+| `SNIPE_VALUE_MULT` | `1.12` | L3 |
+| `SWARM_VALUE_MULT` | `1.05` | L3 |
+| `REINFORCE_VALUE_MULT` | `1.35` | L3 |
+| `CRASH_EXPLOIT_VALUE_MULT` | `1.18` | L3 |
+| `FINISHING_HOSTILE_VALUE_MULT` | `1.3` | L3 |
+| `BEHIND_ROTATING_NEUTRAL_VALUE_MULT` | `0.92` | L3 |
+| `EXPOSED_PLANET_VALUE_MULT` | `2.0` | L3 |
+| `WEAKEST_ENEMY_VALUE_MULT_4P` | `1.5` | L3 |
+| `WEAKEST_ENEMY_VALUE_MULT_2P` | `1.25` | L3 |
+| `GANG_UP_VALUE_MULT` | `1.4` | L3 |
+| `GANG_UP_POST_BATTLE_DELAY` | `2` | — |
+| `GANG_UP_ETA_WINDOW` | `4` | — |
+| `NEUTRAL_MARGIN_BASE` | `2` | L3 |
+| `NEUTRAL_MARGIN_PROD_WEIGHT` | `2` | L3 |
+| `NEUTRAL_MARGIN_CAP` | `8` | L3 |
+| `HOSTILE_MARGIN_BASE` | `3` | L3 |
+| `HOSTILE_MARGIN_PROD_WEIGHT` | `2` | L3 |
+| `HOSTILE_MARGIN_CAP` | `12` | L3 |
+| `STATIC_TARGET_MARGIN` | `4` | L3 |
+| `CONTESTED_TARGET_MARGIN` | `5` | L3 |
+| `FOUR_PLAYER_TARGET_MARGIN` | `2` | L5 |
+| `LONG_TRAVEL_MARGIN_START` | `18` | L3 |
+| `LONG_TRAVEL_MARGIN_DIVISOR` | `3` | L3 |
+| `LONG_TRAVEL_MARGIN_CAP` | `8` | L3 |
+| `COMET_MARGIN_RELIEF` | `6` | L3 |
+| `FINISHING_HOSTILE_SEND_BONUS` | `3` | — |
+| `STATIC_TARGET_SCORE_MULT` | `1.18` | L3 |
+| `EARLY_STATIC_NEUTRAL_SCORE_MULT` | `1.25` | L3 |
+| `FOUR_PLAYER_ROTATING_NEUTRAL_SCORE_MULT` | `0.84` | L5 |
+| `DENSE_STATIC_NEUTRAL_COUNT` | `4` | — |
+| `DENSE_ROTATING_NEUTRAL_SCORE_MULT` | `0.86` | L3 |
+| `SNIPE_SCORE_MULT` | `1.12` | L3 |
+| `SWARM_SCORE_MULT` | `1.06` | L3 |
+| `CRASH_EXPLOIT_SCORE_MULT` | `1.05` | L3 |
+| `FOLLOWUP_MIN_SHIPS` | `8` | — |
+| `LOW_VALUE_COMET_PRODUCTION` | `1` | — |
+| `LATE_CAPTURE_BUFFER` | `5` | — |
+| `VERY_LATE_CAPTURE_BUFFER` | `3` | — |
+| `DEFENSE_LOOKAHEAD_TURNS` | `28` | — |
+| `DEFENSE_COST_TURN_WEIGHT` | `0.4` | — |
+| `DEFENSE_FRONTIER_SCORE_MULT` | `1.12` | L3 |
+| `DEFENSE_SEND_MARGIN_BASE` | `1` | L3 |
+| `DEFENSE_SEND_MARGIN_PROD_WEIGHT` | `1` | L3 |
+| `DEFENSE_SHIP_VALUE` | `0.55` | — |
+| `REINFORCE_ENABLED` | `True` | — |
+| `REINFORCE_MIN_PRODUCTION` | `2` | — |
+| `REINFORCE_MAX_TRAVEL_TURNS` | `22` | — |
+| `REINFORCE_SAFETY_MARGIN` | `2` | L3 |
+| `REINFORCE_MAX_SOURCE_FRACTION` | `0.75` | — |
+| `REINFORCE_MIN_FUTURE_TURNS` | `40` | — |
+| `REINFORCE_HOLD_LOOKAHEAD` | `20` | — |
+| `REINFORCE_COST_TURN_WEIGHT` | `0.35` | — |
+| `RECAPTURE_LOOKAHEAD_TURNS` | `10` | — |
+| `RECAPTURE_COST_TURN_WEIGHT` | `0.52` | — |
+| `RECAPTURE_VALUE_MULT` | `0.88` | L3 |
+| `RECAPTURE_FRONTIER_MULT` | `1.08` | — |
+| `RECAPTURE_PRODUCTION_WEIGHT` | `0.6` | — |
+| `RECAPTURE_IMMEDIATE_WEIGHT` | `0.4` | — |
+| `REAR_SOURCE_MIN_SHIPS` | `16` | L5 |
+| `REAR_DISTANCE_RATIO` | `1.25` | L5 |
+| `REAR_STAGE_PROGRESS` | `0.78` | L5 |
+| `REAR_SEND_RATIO_TWO_PLAYER` | `0.62` | L5 |
+| `REAR_SEND_RATIO_FOUR_PLAYER` | `0.60` | L5 |
+| `REAR_SEND_MIN_SHIPS` | `10` | L5 |
+| `REAR_MAX_TRAVEL_TURNS` | `40` | L5 |
+| `PARTIAL_SOURCE_MIN_SHIPS` | `6` | — |
+| `MULTI_SOURCE_TOP_K` | `5` | — |
+| `MULTI_SOURCE_ETA_TOLERANCE` | `2` | — |
+| `MULTI_SOURCE_PLAN_PENALTY` | `0.97` | — |
+| `HOSTILE_SWARM_ETA_TOLERANCE` | `1` | L4 |
+| `THREE_SOURCE_SWARM_ENABLED` | `True` | — |
+| `THREE_SOURCE_MIN_TARGET_SHIPS` | `20` | — |
+| `THREE_SOURCE_ETA_TOLERANCE` | `1` | — |
+| `THREE_SOURCE_PLAN_PENALTY` | `0.93` | — |
+| `PROACTIVE_DEFENSE_HORIZON` | `12` | L1 |
+| `PROACTIVE_DEFENSE_RATIO` | `0.28` | L4 |
+| `MULTI_ENEMY_PROACTIVE_HORIZON` | `14` | L1 |
+| `MULTI_ENEMY_PROACTIVE_RATIO` | `0.35` | L4 |
+| `MULTI_ENEMY_STACK_WINDOW` | `4` | L4 |
+| `REACTION_SOURCE_TOP_K_MY` | `4` | — |
+| `REACTION_SOURCE_TOP_K_ENEMY` | `4` | — |
+| `PROACTIVE_ENEMY_TOP_K` | `3` | — |
+| `CRASH_EXPLOIT_ENABLED` | `True` | — |
+| `CRASH_EXPLOIT_MIN_TOTAL_SHIPS` | `7` | — |
+| `CRASH_EXPLOIT_ETA_WINDOW` | `3` | — |
+| `CRASH_EXPLOIT_POST_CRASH_DELAY` | `1` | — |
+| `HOSTILE_REINFORCE_FRACTION` | `0.5` | L4 |
+| `HOSTILE_REINFORCE_MAX_SOURCES` | `3` | L4 |
+| `HOSTILE_REINFORCE_MIN_SHIPS` | `4` | L4 |
+| `HOSTILE_REINFORCE_SLACK` | `0` | L4 |
+| `LATE_IMMEDIATE_SHIP_VALUE` | `0.75` | — |
+| `WEAK_ENEMY_THRESHOLD` | `110` | — |
+| `ELIMINATION_BONUS` | `55.0` | L3 |
+| `BEHIND_DOMINATION` | `-0.20` | — |
+| `AHEAD_DOMINATION` | `0.15` | — |
+| `FINISHING_DOMINATION` | `0.28` | — |
+| `FINISHING_PROD_RATIO` | `1.15` | — |
+| `AHEAD_ATTACK_MARGIN_BONUS` | `0.12` | L3 |
+| `BEHIND_ATTACK_MARGIN_PENALTY` | `0.05` | L3 |
+| `FINISHING_ATTACK_MARGIN_BONUS` | `0.12` | L3 |
+| `DOOMED_EVAC_TURN_LIMIT` | `24` | L5 |
+| `DOOMED_MIN_SHIPS` | `8` | L5 |
+| `SOFT_ACT_DEADLINE` | `0.82` | L5 |
+| `HEAVY_PHASE_MIN_TIME` | `0.16` | L5 |
+| `OPTIONAL_PHASE_MIN_TIME` | `0.08` | — |
+| `HEAVY_ROUTE_PLANET_LIMIT` | `32` | L5 |
+
+## 实验分支差异（v6 ≠ v2）
+
+| 常量 | v2（生产） | v6（实验） |
+|------|------------|------------|
+| `COMPETITION_PRESSURE_HARD` | `—` | `0.28` |
+| `COMPETITION_PRESSURE_SOFT` | `—` | `0.62` |
+| `FOUR_PLAYER_ROTATING_SEND_RATIO` | `0.55` | `0.62` |
+| `HIGH_PROD_BONUS_PER_POINT` | `—` | `0.12` |
+| `HIGH_PROD_BONUS_THRESHOLD` | `—` | `3` |
+| `HOSTILE_SWARM_ETA_TOLERANCE` | `1` | `2` |
+| `MULTI_ENEMY_PROACTIVE_RATIO` | `0.35` | `0.28` |
+| `PROD_BEHIND_NEUTRAL_MULT` | `—` | `1.18` |
+

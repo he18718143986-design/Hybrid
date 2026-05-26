@@ -1,0 +1,27 @@
+{
+  "version": "gate_v1",
+  "source": "/Users/97jiyu/Downloads/Orbit/probe_results/decision_delta_hybrid_frontier_v1.jsonl",
+  "target_reversal": 0.35,
+  "min_support": 5,
+  "calibration_ready": false,
+  "n_diverged": 10,
+  "margin_monotone_decreasing": false,
+  "tau_margin_by_bucket": {},
+  "disable_override_buckets": [],
+  "bucket_policy": {
+    "neutral_capture": {
+      "action": "veto_pending_data",
+      "tau_margin": null,
+      "tau_bin": null,
+      "rationale": "no green bin; yellow/gray only \u2014 conservative veto",
+      "support_diverged": 10
+    }
+  },
+  "reversal_by_bucket_divergence_kind": [
+    {
+      "bucket": "neutral_capture",
+      "divergence_kind": "different_presence",
+      "n_reversal": 5
+    }
+  ]
+}

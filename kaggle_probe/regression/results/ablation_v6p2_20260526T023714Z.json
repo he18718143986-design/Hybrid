@@ -1,0 +1,26 @@
+{
+  "id": "v6p2",
+  "layer": "L5",
+  "description": "FOUR_PLAYER_ROTATING_SEND_RATIO 0.55\u21920.62",
+  "output_file": "submission_ablation_v6p2.py",
+  "generated_at_utc": "2026-05-26T02:26:33Z",
+  "baseline": "submission_v2.py",
+  "regression": {
+    "exit_code": 0,
+    "passed": true
+  },
+  "local_ab": {
+    "exit_code": 0,
+    "pair": 10,
+    "ffa": 0,
+    "kaggle_timeout": true,
+    "raw_verdict": "REGRESSED",
+    "wins": 0,
+    "losses": 1,
+    "ties": 9,
+    "win_rate_pct": 0.0,
+    "log": "regression/results/local_ab_v6p2_vs_submission_v2.log"
+  },
+  "status": "completed",
+  "elapsed_s": 640.9
+}

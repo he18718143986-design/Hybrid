@@ -1,0 +1,169 @@
+{
+  "generated_at_utc": "2026-05-26T11:20:26Z",
+  "act_timeout": 999.0,
+  "seeds": [
+    1000,
+    1001
+  ],
+  "summaries": [
+    {
+      "name": "hybrid_vs_v2",
+      "agent_p0": "/Users/97jiyu/Downloads/Orbit/submission/hybrid_main.py",
+      "agent_p1": "/Users/97jiyu/Downloads/Orbit/submission_v2.py",
+      "n_seeds": 2,
+      "completed": 2,
+      "episode_invalid": 0,
+      "p0_winrate": 0.0,
+      "p1_winrate": 1.0,
+      "draw_rate": 0.0,
+      "avg_final_ships": [
+        0.0,
+        2568.5
+      ],
+      "avg_planets_owned": [
+        0.0,
+        28.0
+      ],
+      "total_timeout_events": 0,
+      "total_invalid_events": 300,
+      "avg_duration_s": 11.942574166489067
+    }
+  ],
+  "games": {
+    "hybrid_vs_v2": [
+      {
+        "seed": 1000,
+        "p0": {
+          "ships": 0,
+          "planets": 0,
+          "reward": -1.0,
+          "status": "DONE"
+        },
+        "p1": {
+          "ships": 2614,
+          "planets": 32,
+          "reward": 1.0,
+          "status": "DONE"
+        },
+        "timeout_events": 0,
+        "invalid_events": 119,
+        "episode_invalid": false,
+        "duration_s": 13.768362999981036
+      },
+      {
+        "seed": 1001,
+        "p0": {
+          "ships": 0,
+          "planets": 0,
+          "reward": -1.0,
+          "status": "DONE"
+        },
+        "p1": {
+          "ships": 2523,
+          "planets": 24,
+          "reward": 1.0,
+          "status": "DONE"
+        },
+        "timeout_events": 0,
+        "invalid_events": 181,
+        "episode_invalid": false,
+        "duration_s": 10.116785332997097
+      }
+    ]
+  },
+  "regret": {
+    "n": 4,
+    "horizon": 6,
+    "avg_ship_diff": -1.25,
+    "avg_planet_diff": 0.0,
+    "hybrid_worse_ships_rate": 0.25,
+    "by_bucket": {
+      "neutral_capture": {
+        "n": 2,
+        "hybrid_worse_ships_rate": 0.5,
+        "avg_ship_diff": -2.5,
+        "avg_planet_diff": 0.0
+      },
+      "pass": {
+        "n": 2,
+        "hybrid_worse_ships_rate": 0.0,
+        "avg_ship_diff": 0.0,
+        "avg_planet_diff": 0.0
+      }
+    },
+    "rows": [
+      {
+        "seed": 1000,
+        "decision_step": 10,
+        "action_bucket": "pass",
+        "v2": {
+          "ships": 22,
+          "planets": 2,
+          "step": 17
+        },
+        "hybrid": {
+          "ships": 22,
+          "planets": 2,
+          "step": 17
+        },
+        "ship_diff_hybrid_minus_v2": 0,
+        "planet_diff_hybrid_minus_v2": 0,
+        "hybrid_worse_ships": false
+      },
+      {
+        "seed": 1000,
+        "decision_step": 25,
+        "action_bucket": "neutral_capture",
+        "v2": {
+          "ships": 101,
+          "planets": 3,
+          "step": 32
+        },
+        "hybrid": {
+          "ships": 96,
+          "planets": 3,
+          "step": 32
+        },
+        "ship_diff_hybrid_minus_v2": -5,
+        "planet_diff_hybrid_minus_v2": 0,
+        "hybrid_worse_ships": true
+      },
+      {
+        "seed": 1001,
+        "decision_step": 10,
+        "action_bucket": "neutral_capture",
+        "v2": {
+          "ships": 59,
+          "planets": 2,
+          "step": 17
+        },
+        "hybrid": {
+          "ships": 59,
+          "planets": 2,
+          "step": 17
+        },
+        "ship_diff_hybrid_minus_v2": 0,
+        "planet_diff_hybrid_minus_v2": 0,
+        "hybrid_worse_ships": false
+      },
+      {
+        "seed": 1001,
+        "decision_step": 25,
+        "action_bucket": "pass",
+        "v2": {
+          "ships": 114,
+          "planets": 4,
+          "step": 32
+        },
+        "hybrid": {
+          "ships": 114,
+          "planets": 4,
+          "step": 32
+        },
+        "ship_diff_hybrid_minus_v2": 0,
+        "planet_diff_hybrid_minus_v2": 0,
+        "hybrid_worse_ships": false
+      }
+    ]
+  }
+}

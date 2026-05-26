@@ -1,0 +1,11 @@
+agent_mode: hybrid
+search:
+  enabled: true
+  rollout_depth: 6
+  max_candidates: 8
+  weight_heuristic: 0.4
+  weight_rollout: 0.4
+  weight_model: 0.2
+
+model:
+  enabled: false

@@ -1,0 +1,48 @@
+
+============================================================
+Experiment: v6-1
+============================================================
+Generated: /Users/97jiyu/Downloads/Orbit/submission_ablation_v6_1.py (118809 bytes)
+
+--- local_ab (v6-1) ---
+/Users/97jiyu/Downloads/Orbit/.venv/bin/python /Users/97jiyu/Downloads/Orbit/local_ab.py --new /Users/97jiyu/Downloads/Orbit/submission_ablation_v6_1.py --old submission_v2.py --pair 0 --ffa 10 --kaggle-timeout
+Loading environment cabt failed: dlopen(/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so, 0x0006): tried: '/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (slice is not valid mach-o file), '/System/Volumes/Preboot/Cryptexes/OS/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (no such file), '/Users/97jiyu/Downloads/Orbit/.venv/lib/python3.14/site-packages/kaggle_environments/envs/cabt/cg/libcg.so' (slice is not valid mach-o file)
+NEW agent: /Users/97jiyu/Downloads/Orbit/submission_ablation_v6_1.py
+OLD agent: /Users/97jiyu/Downloads/Orbit/submission_v2.py
+Plan: 0 1v1 games + 10 4P games
+actTimeout: Kaggle (1.0s)
+
+--- 4P FFA: 10 games (NEW vs 3x OLD) ---
+  [  1/10] seed=2000 new_idx=0 rewards=[-1, -1, 1, -1] winner=OLD#2 time=208.4s
+  [  2/10] seed=2001 new_idx=1 rewards=[1, 1, 1, 1] winner=TIE time=139.2s
+  [  3/10] seed=2002 new_idx=2 rewards=[1, 1, 1, 1] winner=TIE time=148.7s
+  [  4/10] seed=2003 new_idx=3 rewards=[1, 1, 1, 1] winner=TIE time=165.0s
+  [  5/10] seed=2004 new_idx=0 rewards=[1, 1, 1, 1] winner=TIE time=185.9s
+  [  6/10] seed=2005 new_idx=1 rewards=[1, 1, 1, 1] winner=TIE time=76.3s
+  [  7/10] seed=2006 new_idx=2 rewards=[1, 1, 1, 1] winner=TIE time=78.1s
+  [  8/10] seed=2007 new_idx=3 rewards=[1, 1, 1, 1] winner=TIE time=186.4s
+  [  9/10] seed=2008 new_idx=0 rewards=[1, 1, 1, 1] winner=TIE time=258.8s
+  [ 10/10] seed=2009 new_idx=1 rewards=[1, 1, 1, 1] winner=TIE time=182.6s
+
+=== 4P FFA RESULTS ===
+  games:       10
+  wins:        0
+  losses:      1
+  ties:        9
+  win rate:    0.0%
+  avg time:    162.9s per game
+  invalid:     0
+
+========================================================
+FINAL VERDICT
+========================================================
+    4P: 0.0% win rate  (0W/1L/9T)  -> REGRESSED
+
+Thresholds: >55% win = IMPROVED, <45% win with losses = REGRESSED.
+All ties = evenly matched in this matchup (not a regression).
+
+
+Result: /Users/97jiyu/Downloads/Orbit/regression/results/ablation_v6-1_20260526T032925Z.json
+Status: completed (1635.6s)
+
+All 1 experiment(s) OK.
