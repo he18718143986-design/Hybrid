@@ -73,6 +73,8 @@ def run_cell(
 
         print(f"\n--- regret ({name}, horizon={regret_horizon}) ---")
         if regret.get("n"):
+            traj = regret.get("replay_trajectory", "v2")
+            print(f"  replay_trajectory={traj}")
             print(
                 f"  n={regret['n']}  avg_ship_diff={regret['avg_ship_diff']:.2f}  "
                 f"hybrid_worse_rate={regret['hybrid_worse_ships_rate']:.1%}"

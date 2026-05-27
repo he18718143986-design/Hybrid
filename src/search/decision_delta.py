@@ -37,7 +37,7 @@ def build_delta_record(
     config: Optional[dict],
     regret_horizon: int,
     act_timeout: float,
-    follow_agent,
+    replay_agent,
     rollout_opponent: str,
     *,
     counterfactual: bool = False,
@@ -60,10 +60,11 @@ def build_delta_record(
         hy_moves,
         regret_horizon,
         act_timeout,
-        follow_agent,
+        replay_agent,
         action_bucket=ch.get("hybrid_action_bucket", "unknown"),
         differ=differ,
         rollout_margin=margin,
+        replay_agent=replay_agent,
     )
     ship_diff = reg["ship_diff_hybrid_minus_v2"]
     decision_reversal = reg.get("decision_reversal", differ and ship_diff < 0)
@@ -113,13 +114,14 @@ def collect_decision_deltas(
     *,
     counterfactual: bool = False,
 ) -> List[Dict[str, Any]]:
-    """Walk seeds with v2 replay; record delta at each decision step."""
+    """Walk seeds on hybrid replay track; record delta at each decision step."""
     import os
 
     from kaggle_environments import make
-    from src.policy.v2_bridge import v2_agent
+    from src.search.probe_run import resolve_agent, AGENT_HYBRID
 
     os.environ["ORBIT_ROLLOUT_OPPONENT"] = rollout_opponent
+    hybrid_fn = resolve_agent(AGENT_HYBRID)
     cfg = {"actTimeout": act_timeout}
     records: List[Dict[str, Any]] = []
 
@@ -141,7 +143,7 @@ def collect_decision_deltas(
                     cfg,
                     regret_horizon,
                     act_timeout,
-                    v2_agent,
+                    hybrid_fn,
                     rollout_opponent,
                     counterfactual=counterfactual,
                 )
@@ -150,6 +152,6 @@ def collect_decision_deltas(
                         pass
                     else:
                         records.append(rec)
-            env.step([v2_agent(env.state[0].observation, cfg), []])
+            env.step([hybrid_fn(env.state[0].observation, cfg), []])
 
     return records

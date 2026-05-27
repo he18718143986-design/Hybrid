@@ -436,7 +436,9 @@ def choices_at_obs(
     if counterfactual and scored:
         hy_moves = filter_legal_moves(_signal_probe_moves(obs, v2_moves, scored), obs)
     else:
-        hy_moves = filter_legal_moves(_hybrid_agent(obs, config), obs)
+        from src.search.probe_run import hybrid_probe_agent
+
+        hy_moves = filter_legal_moves(hybrid_probe_agent(obs, config), obs)
 
     v2m = _primary_move(v2_moves)
     hym = _primary_move(hy_moves)
@@ -480,9 +482,9 @@ def real_env_playout(
     forced_move: Sequence[Move],
     horizon: int,
     act_timeout: float,
-    follow_agent,
+    replay_agent,
 ) -> dict[str, int]:
-    """Replay with follow_agent until decision_step, force P0 move, continue vs passive P1."""
+    """Replay with replay_agent until decision_step, force P0 move, then same agent."""
     from kaggle_environments import make
 
     cfg = {"actTimeout": act_timeout}
@@ -501,13 +503,13 @@ def real_env_playout(
             break
         if step < decision_step:
             obs0 = env.state[0].observation
-            env.step([follow_agent(obs0, cfg), []])
+            env.step([replay_agent(obs0, cfg), []])
         elif step == decision_step:
             p0 = [list(m) for m in forced_move] if forced_move else []
             env.step([p0, []])
         else:
             obs0 = env.state[0].observation
-            env.step([follow_agent(obs0, cfg), []])
+            env.step([replay_agent(obs0, cfg), []])
 
     obs = env.state[0].observation
     ships, planets = _player_stats(obs, player)
@@ -525,13 +527,15 @@ def measure_regret(
     action_bucket: str = "unknown",
     differ: Optional[bool] = None,
     rollout_margin: Optional[float] = None,
+    replay_agent=None,
 ) -> dict[str, Any]:
-    """Compare real-env outcomes after v2 vs hybrid opening at one step."""
+    """Compare outcomes after v2 vs hybrid opening from the same pre-decision replay."""
+    replay = replay_agent if replay_agent is not None else follow_agent
     v2_out = real_env_playout(
-        seed, decision_step, v2_move, horizon, act_timeout, follow_agent,
+        seed, decision_step, v2_move, horizon, act_timeout, replay,
     )
     hy_out = real_env_playout(
-        seed, decision_step, hybrid_move, horizon, act_timeout, follow_agent,
+        seed, decision_step, hybrid_move, horizon, act_timeout, replay,
     )
     ship_diff = hy_out["ships"] - v2_out["ships"]
     if differ is None:

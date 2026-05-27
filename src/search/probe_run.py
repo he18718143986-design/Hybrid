@@ -54,6 +54,11 @@ def resolve_agent(ref: AgentRef) -> Callable[..., Any]:
     return mod.agent
 
 
+def hybrid_probe_agent(obs, config=None):
+    """Hybrid agent for probe replay (matches live hybrid_main entry)."""
+    return resolve_agent(AGENT_HYBRID)(obs, config)
+
+
 @dataclass
 class EndStats:
     ships: int = 0
@@ -248,19 +253,11 @@ def rollout_divergence_probe(
 ) -> dict[str, Any]:
     import importlib.util
 
-    from src.policy.v2_bridge import v2_agent as v2_fn
     from src.search.probe_metrics import aggregate_divergence, choices_at_obs
-
-    def load_agent(path: Path):
-        spec = importlib.util.spec_from_file_location(path.stem, path)
-        mod = importlib.util.module_from_spec(spec)
-        assert spec.loader is not None
-        spec.loader.exec_module(mod)
-        return mod.agent
 
     from kaggle_environments import make
 
-    hybrid_fn = load_agent(Path(AGENT_HYBRID))
+    hybrid_fn = hybrid_probe_agent
     cfg = {"actTimeout": act_timeout}
     samples: list = []
     for seed in seeds:
@@ -278,7 +275,7 @@ def rollout_divergence_probe(
                 detail["seed"] = seed
                 detail["step"] = step_num
                 samples.append(detail)
-            env.step([v2_fn(env.state[0].observation, cfg), []])
+            env.step([hybrid_fn(env.state[0].observation, cfg), []])
     agg = aggregate_divergence(samples)
     return {
         "seeds": list(seeds),
@@ -296,9 +293,9 @@ def regret_probe(
     horizon: int = 15,
 ) -> dict[str, Any]:
     from kaggle_environments import make
-    from src.policy.v2_bridge import v2_agent
     from src.search.probe_metrics import choices_at_obs, measure_regret, summarize_regret
 
+    hybrid_fn = hybrid_probe_agent
     cfg = {"actTimeout": act_timeout}
     rows: list = []
     for seed in seeds:
@@ -322,18 +319,20 @@ def regret_probe(
                         ch.get("hybrid_moves") or [],
                         horizon,
                         act_timeout,
-                        v2_agent,
+                        hybrid_fn,
                         action_bucket=ch.get("hybrid_action_bucket", "unknown"),
                         differ=ch.get("differ"),
                         rollout_margin=margin,
+                        replay_agent=hybrid_fn,
                     )
                 )
-            env.step([v2_agent(env.state[0].observation, cfg), []])
+            env.step([hybrid_fn(env.state[0].observation, cfg), []])
 
     if not rows:
-        return {"n": 0, "horizon": horizon, "rows": []}
+        return {"n": 0, "horizon": horizon, "replay_trajectory": "hybrid", "rows": []}
     out = summarize_regret(rows)
     out["horizon"] = horizon
+    out["replay_trajectory"] = "hybrid"
     return out
 
 
