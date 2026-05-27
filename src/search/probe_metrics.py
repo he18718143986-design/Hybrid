@@ -29,6 +29,37 @@ def _primary_move(moves: Sequence[Move]) -> Optional[Move]:
     return list(moves[0]) if moves else None
 
 
+def move_target_id(obs: Any, move: Optional[Move]) -> Optional[int]:
+    """Planet id a fleet move is aimed at (None if pass / unknown)."""
+    if move is None or len(move) < 3:
+        return None
+    parsed = parse_observation(obs)
+    player = parsed["player"]
+    planets = {p.id: p for p in parsed["planets"]}
+    initial = {p.id: p for p in parsed["initial_planets"]}
+    src_id = int(move[0])
+    src = planets.get(src_id)
+    if src is None:
+        return None
+    from kaggle_environments.envs.orbit_wars.orbit_wars import Fleet
+    from src.world.fleet import fleet_target_planet
+    from src.world.geometry import launch_point
+
+    angle = float(move[1])
+    ships = int(move[2])
+    lx, ly = launch_point(src.x, src.y, src.radius, angle)
+    fleet = Fleet(-1, player, lx, ly, angle, src_id, ships)
+    target, _ = fleet_target_planet(
+        fleet,
+        parsed["planets"],
+        initial,
+        parsed["angular_velocity"],
+        parsed["comets"],
+        set(parsed["comet_planet_ids"]),
+    )
+    return int(target.id) if target is not None else None
+
+
 def _match_scored_candidate(
     scored: Sequence[Candidate], move: Optional[Move],
 ) -> Optional[Candidate]:

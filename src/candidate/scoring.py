@@ -13,11 +13,13 @@ def target_value(
     modes: dict,
     mission: str = "capture",
     arrival_turns: int = 10,
+    policy: dict | None = None,
 ) -> float:
     from src.policy.v2_bridge import get_v2_module
 
     v2 = get_v2_module()
-    policy = v2.build_policy_state(world.inner)
+    if policy is None:
+        policy = v2.build_policy_state(world.inner)
     return v2.target_value(
         planet, arrival_turns, mission, world.inner, modes, policy,
     )

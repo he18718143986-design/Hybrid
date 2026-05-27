@@ -93,7 +93,7 @@ def generate_all_candidates(world: World, budget: TimeBudget) -> List[Candidate]
     policy = v2.build_policy_state(w)
     planned = {}
     candidates: List[Candidate] = []
-    for mission in generate_missions(world, modes, budget):
+    for mission in generate_missions(world, modes, budget, policy=policy):
         if budget.expired():
             break
         for cand in generate_candidates_for_mission(

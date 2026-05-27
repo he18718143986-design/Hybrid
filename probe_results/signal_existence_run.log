@@ -1,0 +1,11 @@
+
+=== Phase C.5: Signal Existence Proof ===
+  n_diverged=0  signal=rollout_margin
+  global ρ=None  sign_dir=None  noise_ratio=None
+
+  CASE insufficient_data: Need more diverged samples before signal existence test.
+  route → run_full_matrix
+
+  bucket                     n        ρ     sign    noise  struct
+
+Wrote /Users/97jiyu/Downloads/Orbit/probe_results/signal_existence_v1.json

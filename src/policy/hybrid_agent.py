@@ -47,6 +47,7 @@ def _hybrid_agent(obs: Any, config: Optional[dict] = None) -> List[Move]:
     from src.search.budget import TimeBudget
     from src.search.probe_metrics import (
         classify_decision_bucket,
+        move_target_id,
         rollout_margin_vs_v2,
         _match_scored_candidate,
     )
@@ -76,27 +77,32 @@ def _hybrid_agent(obs: Any, config: Optional[dict] = None) -> List[Move]:
     v2_primary = v2_moves[0] if v2_moves else None
     v2_top = _match_scored_candidate(scored, v2_primary)
     margin = rollout_margin_vs_v2(best, v2_top)
-    if margin is None:
-        return v2_moves
-
-    bucket = classify_decision_bucket(obs, candidate=best, move=v2_primary)
-    # Case A / gate_policy: neutral_capture — never override (overextended_neutral)
-    if bucket == "neutral_capture":
-        return v2_moves
 
     override_move: Move = [best.src_id, best.angle, best.ships]
 
     if not validate_move_for_obs(override_move, obs):
         return v2_moves
 
-    # Same as v2 top fleet — no change
     if v2_primary and list(v2_primary) == override_move:
         return v2_moves
 
-    try:
-        from src.policy.gate_policy_v1 import decide_override
+    # Override only when rollout top aims at a different planet than v2 primary
+    v2_target_id = move_target_id(obs, v2_primary)
+    if v2_target_id is None or best.target_id == v2_target_id:
+        return v2_moves
 
-        if not decide_override(bucket, margin):
+    bucket = classify_decision_bucket(obs, candidate=best, move=v2_primary)
+    margin_val = float(margin) if margin is not None else 0.0
+
+    try:
+        from src.policy.gate_policy_v1 import decide_override, lookup_cell
+
+        cell = lookup_cell(bucket, margin_val)
+        green_ev = (
+            cell.get("tier") == "green"
+            and float(cell.get("ev_ship_diff", 0)) > 0
+        )
+        if not green_ev and not decide_override(bucket, margin_val):
             return v2_moves
     except ImportError:
         return v2_moves

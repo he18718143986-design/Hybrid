@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import sys
 import time
 from dataclasses import asdict, dataclass, field
@@ -31,13 +32,18 @@ def resolve_agent(ref: AgentRef) -> Callable[..., Any]:
     if root not in sys.path:
         sys.path.insert(0, root)
     if path.name == "hybrid_main.py":
-        import submission.hybrid_main as mod
 
-        return mod.agent
+        def hybrid_agent_wrapper(obs, config=None):
+            os.environ["ORBIT_AGENT_MODE"] = "hybrid"
+            from src.policy.hybrid_agent import agent as hybrid_agent_fn
+
+            return hybrid_agent_fn(obs, config)
+
+        return hybrid_agent_wrapper
     if path.name == "submission_v2.py":
-        import submission_v2 as mod
+        from src.policy.v2_bridge import v2_agent
 
-        return mod.agent
+        return v2_agent
     spec = importlib.util.spec_from_file_location(f"probe_{path.stem}", path)
     if spec is None or spec.loader is None:
         raise ImportError(f"cannot load agent from {path}")
@@ -196,8 +202,16 @@ def run_match(
         agent_p1=str(agent_p1),
         seeds=list(seeds),
     )
-    for seed in seeds:
+    n = len(seeds)
+    for i, seed in enumerate(seeds):
+        print(f"  [{summary.name}] game {i + 1}/{n} seed={seed} ...", flush=True)
         summary.games.append(run_game([agent_p0, agent_p1], seed, act_timeout))
+        g = summary.games[-1]
+        print(
+            f"  [{summary.name}] seed={seed} done  "
+            f"invalid={g.invalid_events}  duration_s={g.duration_s:.1f}",
+            flush=True,
+        )
     return summary
 
 

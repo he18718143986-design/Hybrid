@@ -16,18 +16,24 @@ class Mission:
     meta: dict = field(default_factory=dict)
 
 
-def generate_missions(world: World, modes: dict, budget) -> List[Mission]:
-    """Return prioritized missions (capture / reinforce / snipe / …).
-
-    TODO: call submission_v2 mission builders or reimplement incrementally.
-    """
+def generate_missions(
+    world: World,
+    modes: dict,
+    budget,
+    policy: dict | None = None,
+) -> List[Mission]:
+    """Return prioritized missions (capture / reinforce / snipe / …)."""
     from src.candidate.scoring import target_value
+    from src.policy.v2_bridge import get_v2_module
+
+    if policy is None:
+        policy = get_v2_module().build_policy_state(world.inner)
 
     missions: List[Mission] = []
     for planet in world.inner.planets:
         if planet.owner == world.player:
             continue
-        score = target_value(world, planet, modes)
+        score = target_value(world, planet, modes, policy=policy)
         if score <= -1e8:
             continue
         kind = "capture" if planet.owner == -1 else "attack"

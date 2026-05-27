@@ -1,4 +1,4 @@
-"""Auto-generated decision policy compiler output — do not edit by hand."""
+"""Auto-generated decision policy compiler output — synced with gate_policy_v1.json."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import Optional
 
 CALIBRATION_READY = True
 
-# Uncalibrated buckets: per-bucket margin floor (non-neutral exploration)
+# Uncalibrated buckets: conservative margin floor until calibrated
 TAU_UNCALIBRATED_BY_BUCKET = {
     "aggressive_expansion": 0.7,
     "comet_chase": 0.5,
@@ -22,8 +22,8 @@ TAU_MARGIN_BY_BUCKET = {
     "neutral_capture": 0.0,
 }
 
-DISABLE_OVERRIDE_BUCKETS = frozenset(["neutral_capture"])
-STOCHASTIC_OVERRIDE_BUCKETS = frozenset([])
+DISABLE_OVERRIDE_BUCKETS = frozenset()
+STOCHASTIC_OVERRIDE_BUCKETS = frozenset()
 
 DECISION_CELLS = {
     "neutral_capture": {
@@ -36,7 +36,7 @@ DECISION_CELLS = {
             "ev_ship_diff": 11.154411764705882,
             "p_improve": 0.7426470588235294,
             "avg_gain": 23.023255813953487,
-            "avg_loss": -13.228571428571428
+            "avg_loss": -13.228571428571428,
         },
         "10+": {
             "tier": "yellow",
@@ -47,8 +47,8 @@ DECISION_CELLS = {
             "ev_ship_diff": 23.2,
             "p_improve": 0.8,
             "avg_gain": 29.25,
-            "avg_loss": -1.0
-        }
+            "avg_loss": -1.0,
+        },
     }
 }
 
@@ -96,14 +96,14 @@ def decide_override(
         return rollout_margin >= tau
     tier = cell.get("tier", "gray")
     ev = expected_override_ev(bucket, rollout_margin)
-    if tier in ('red', 'gray') or ev <= 0:
+    if tier in ("red", "gray") or ev <= 0:
         return False
-    if tier == 'green':
+    if tier == "green":
         tau = TAU_MARGIN_BY_BUCKET.get(bucket)
         if tau is not None and rollout_margin < tau:
             return False
         return True
-    if tier == 'yellow' and bucket in STOCHASTIC_OVERRIDE_BUCKETS:
+    if tier == "yellow" and bucket in STOCHASTIC_OVERRIDE_BUCKETS:
         r = rng or random
         return r.random() < calibrated_trust(bucket, rollout_margin)
     return False
